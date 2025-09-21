@@ -10,11 +10,37 @@ const Crop = require("./models/Crop");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// ✅ CORS setup
+const allowedOrigins = [
+  "https://agriculture-assistant.onrender.com", // your frontend
+  "http://localhost:3000" // local dev
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+// Parse JSON requests
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI);
+// ✅ MongoDB connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ MongoDB connected"))
+.catch(err => console.error("❌ MongoDB connection error:", err));
 
+// ===== ROUTES =====
+
+// Crop Recommendation (calls ML API)
 app.post("/recommend", async (req, res) => {
   try {
     const response = await fetch("https://agri-ml-api.onrender.com/predict", {
@@ -23,8 +49,10 @@ app.post("/recommend", async (req, res) => {
       body: JSON.stringify(req.body)
     });
     const result = await response.json();
+
     const query = new Query({ ...req.body, recommended: [result.crop] });
     await query.save();
+
     res.json({ recommended: [result.crop] });
   } catch (error) {
     console.error("Prediction API call failed:", error);
@@ -32,11 +60,17 @@ app.post("/recommend", async (req, res) => {
   }
 });
 
+// Fetch crops from DB
 app.get("/crops", async (req, res) => {
-  const crops = await Crop.find();
-  res.json(crops);
+  try {
+    const crops = await Crop.find();
+    res.json(crops);
+  } catch (err) {
+    res.status(500).json({ msg: "Failed to load crops" });
+  }
 });
 
+// Techniques
 app.get("/techniques", (req, res) => {
   res.json([
     { name: "Drip Irrigation", desc: "Efficient water use for crops" },
@@ -52,6 +86,7 @@ app.get("/techniques", (req, res) => {
   ]);
 });
 
+// Schemes
 app.get("/schemes", (req, res) => {
   res.json([
     { name: "PM-Kisan Samman Nidhi", benefit: "₹6000 per year direct income support", desc: "A central government scheme that provides income support to all landholding farmer families.", link: "https://pmkisan.gov.in/" },
@@ -67,6 +102,7 @@ app.get("/schemes", (req, res) => {
   ]);
 });
 
+// Diseases
 app.get("/diseases", (req, res) => {
   res.json([
     { crop: "Wheat", disease: "Rust", solution: "Use resistant varieties and timely fungicide application." },
@@ -78,6 +114,7 @@ app.get("/diseases", (req, res) => {
   ]);
 });
 
+// NPK Advisor
 app.post("/npk-advisor", (req, res) => {
   const { N, P, K } = req.body;
   let advice = [];
@@ -87,6 +124,7 @@ app.post("/npk-advisor", (req, res) => {
   res.json({ advice });
 });
 
+// Contact
 app.post("/contact", async (req, res) => {
   const { name, email, message } = req.body;
   const contact = new Contact({ name, email, message });
@@ -94,4 +132,5 @@ app.post("/contact", async (req, res) => {
   res.json({ success: true, msg: "Message saved!" });
 });
 
+// Start Server
 app.listen(PORT, () => console.log(`🚀 Express running on port ${PORT}`));
