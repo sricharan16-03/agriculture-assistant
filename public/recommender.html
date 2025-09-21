@@ -87,8 +87,8 @@
             };
 
             try {
-                // UPDATED URL
-                const response = await fetch('https://agri-assistant-ml-api.onrender.com/predict', {
+                
+                const response = await fetch('https://agri-ml-api.onrender.com/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
