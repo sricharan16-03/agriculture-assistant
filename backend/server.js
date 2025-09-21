@@ -12,9 +12,9 @@ const Crop = require("./models/Crop");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Corrected list of allowed frontends
+// ✅ This is the final, correct list of allowed frontends
 const allowedOrigins = [
-  "https://sricharan16-03.github.io", // Your live frontend
+  "https://sricharan16-03.github.io", // Your live frontend URL
   "http://localhost:3000",           // For local development
   "http://127.0.0.1:5500"            // For local development
 ];
@@ -67,32 +67,16 @@ app.get("/crops", async (req, res) => {
   }
 });
 
-// Other routes for techniques, schemes, etc. remain the same...
-
 app.get("/techniques", (req, res) => {
-  res.json([
-    { name: "Drip Irrigation", desc: "Efficient water use for crops" },
-    { name: "Organic Farming", desc: "Eco-friendly farming techniques" },
-    { name: "Precision Agriculture", desc: "Uses technology like GPS and sensors to observe, measure, and respond to variability in crops." },
-    { name: "Hydroponics", desc: "A soilless farming technique where plants are grown in a nutrient-rich water solution." },
-    { name: "Vertical Farming", desc: "Growing crops in vertically stacked layers, often indoors, to maximize space." },
-  ]);
+  res.json([ { name: "Drip Irrigation", desc: "Efficient water use for crops" }, { name: "Organic Farming", desc: "Eco-friendly farming techniques" }, { name: "Precision Agriculture", desc: "Uses technology like GPS and sensors to observe, measure, and respond to variability in crops." }, { name: "Hydroponics", desc: "A soilless farming technique where plants are grown in a nutrient-rich water solution." }, { name: "Vertical Farming", desc: "Growing crops in vertically stacked layers, often indoors, to maximize space." }, ]);
 });
 
 app.get("/schemes", (req, res) => {
-  res.json([
-    { name: "PM-Kisan Samman Nidhi", benefit: "₹6000 per year direct income support", desc: "A central government scheme that provides income support to all landholding farmer families.", link: "https://pmkisan.gov.in/" },
-    { name: "Pradhan Mantri Fasal Bima Yojana (PMFBY)", benefit: "Insurance cover against crop failure", desc: "Provides comprehensive insurance coverage against crop loss due to non-preventable natural calamities.", link: "https://pmfby.gov.in/" },
-    { name: "Soil Health Card Scheme", benefit: "Free soil testing and nutrient report", desc: "Farmers are issued Soil Health Cards which provide information on the nutrient status of their soil.", link: "https://soilhealth.dac.gov.in/" },
-  ]);
+  res.json([ { name: "PM-Kisan Samman Nidhi", benefit: "₹6000 per year direct income support", desc: "A central government scheme that provides income support to all landholding farmer families.", link: "https://pmkisan.gov.in/" }, { name: "Pradhan Mantri Fasal Bima Yojana (PMFBY)", benefit: "Insurance cover against crop failure", desc: "Provides comprehensive insurance coverage against crop loss due to non-preventable natural calamities.", link: "https://pmfby.gov.in/" }, { name: "Soil Health Card Scheme", benefit: "Free soil testing and nutrient report", desc: "Farmers are issued Soil Health Cards which provide information on the nutrient status of their soil.", link: "https://soilhealth.dac.gov.in/" }, ]);
 });
 
 app.get("/diseases", (req, res) => {
-  res.json([
-    { crop: "Wheat", disease: "Rust", solution: "Use resistant varieties and timely fungicide application." },
-    { crop: "Rice", disease: "Blast", solution: "Use resistant varieties, proper field spacing, and fungicide." },
-    { crop: "Potato", disease: "Late Blight", solution: "Apply fungicides preventively and ensure good field drainage." },
-  ]);
+  res.json([ { crop: "Wheat", disease: "Rust", solution: "Use resistant varieties and timely fungicide application." }, { crop: "Rice", disease: "Blast", solution: "Use resistant varieties, proper field spacing, and fungicide." }, { crop: "Potato", disease: "Late Blight", solution: "Apply fungicides preventively and ensure good field drainage." }, ]);
 });
 
 app.post("/npk-advisor", (req, res) => {
