@@ -27,23 +27,13 @@
         <p>Enter the N-P-K (Nitrogen, Phosphorus, Potassium) values of your soil to get fertilizer advice.</p>
 
         <form id="npkForm">
-            <div>
-                <label for="n">Nitrogen (N) content:</label>
-                <input type="number" id="n" name="n" placeholder="e.g., 45" required>
-            </div>
-            <div>
-                <label for="p">Phosphorus (P) content:</label>
-                <input type="number" id="p" name="p" placeholder="e.g., 35" required>
-            </div>
-            <div>
-                <label for="k">Potassium (K) content:</label>
-                <input type="number" id="k" name="k" placeholder="e.g., 30" required>
-            </div>
+            <div><label for="n">Nitrogen (N) content:</label><input type="number" id="n" name="n" placeholder="e.g., 45" required></div>
+            <div><label for="p">Phosphorus (P) content:</label><input type="number" id="p" name="p" placeholder="e.g., 35" required></div>
+            <div><label for="k">Potassium (K) content:</label><input type="number" id="k" name="k" placeholder="e.g., 30" required></div>
             <button type="submit">Get Advice</button>
         </form>
 
-        <div id="adviceResult" class="card" style="margin-top: 30px; text-align: center; display: none;">
-        </div>
+        <div id="adviceResult" class="card" style="margin-top: 30px; text-align: center; display: none;"></div>
     </main>
 
     <footer class="footer">
@@ -51,6 +41,8 @@
             <p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <div class="creator-credit">Created by Sricharan, Ramcharan and Suehl</div>
 
     <script>
         const form = document.getElementById('npkForm');
@@ -68,8 +60,8 @@
             };
 
             try {
-                // UPDATED URL
-                const response = await fetch('https://agri-backend.onrender.com/npk-advisor', {
+                // LIVE RENDER URL
+                const response = await fetch('https://agri-backend-4121.onrender.com/npk-advisor', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(soilData)

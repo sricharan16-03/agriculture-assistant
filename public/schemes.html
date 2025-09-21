@@ -38,12 +38,14 @@
         </div>
     </footer>
 
+    <div class="creator-credit">Created by Sricharan, Ramcharan and Suehl</div>
+
     <script>
         window.addEventListener('DOMContentLoaded', async () => {
             const schemesListDiv = document.getElementById('schemes-list');
             try {
-                // UPDATED URL
-                const response = await fetch('https://agri-backend.onrender.com/schemes');
+                // LIVE RENDER URL
+                const response = await fetch('https://agri-backend-4121.onrender.com/schemes');
                 if (!response.ok) throw new Error('Failed to fetch data.');
 
                 const schemes = await response.json();
