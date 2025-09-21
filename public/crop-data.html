@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Data - Agriculture Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Agri-Assistant 🌱</a>
+            <nav>
+                <a href="crop-data.html">Crop Data</a>
+                <a href="recommender.html">Crop Recommender</a>
+                <a href="techniques.html">Techniques</a>
+                <a href="schemes.html">Schemes</a>
+                <a href="diseases.html">Diseases</a>
+                <a href="npk-advisor.html">NPK Advisor</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Crop Information Database</h2>
+        <div id="crop-list" class="feature-cards">
+            <p>Loading crop data...</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            const cropListDiv = document.getElementById('crop-list');
+            try {
+                // UPDATED URL
+                const response = await fetch('https://agri-backend.onrender.com/crops');
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const crops = await response.json();
+                cropListDiv.innerHTML = ''; 
+                
+                if (crops.length === 0) {
+                    cropListDiv.innerHTML = '<p>No crop data found in the database.</p>';
+                    return;
+                }
+
+                crops.forEach(crop => {
+                    const cropCard = document.createElement('div');
+                    cropCard.className = 'card';
+                    cropCard.innerHTML = `
+                        <h3>${crop.name}</h3>
+                        <p><strong>Soil Type:</strong> ${crop.soil}</p>
+                        <p><strong>Climate:</strong> ${crop.climate}</p>
+                        <p><strong>Expected Yield:</strong> ${crop.yield}</p>
+                    `;
+                    cropListDiv.appendChild(cropCard);
+                });
+
+            } catch (error) {
+                console.error('Failed to fetch crop data:', error);
+                cropListDiv.innerHTML = '<p style="color: red;">Failed to load crop data. Please ensure the backend server is live and try again.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

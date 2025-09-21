@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Schemes - Agriculture Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Agri-Assistant 🌱</a>
+            <nav>
+                <a href="crop-data.html">Crop Data</a>
+                <a href="recommender.html">Crop Recommender</a>
+                <a href="techniques.html">Techniques</a>
+                <a href="schemes.html">Schemes</a>
+                <a href="diseases.html">Diseases</a>
+                <a href="npk-advisor.html">NPK Advisor</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>🇮🇳 Government Schemes for Farmers</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 40px auto;">
+            Explore various beneficial schemes provided by the government to support farmers and promote agricultural growth in India.
+        </p>
+        <div id="schemes-list" class="feature-cards">
+            <p>Loading schemes...</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            const schemesListDiv = document.getElementById('schemes-list');
+            try {
+                // UPDATED URL
+                const response = await fetch('https://agri-backend.onrender.com/schemes');
+                if (!response.ok) throw new Error('Failed to fetch data.');
+
+                const schemes = await response.json();
+                schemesListDiv.innerHTML = '';
+
+                schemes.forEach(scheme => {
+                    const schemeCard = document.createElement('div');
+                    schemeCard.className = 'card';
+                    schemeCard.innerHTML = `
+                        <h3>${scheme.name}</h3>
+                        <p><strong>Benefit:</strong> ${scheme.benefit}</p>
+                        <p class="scheme-desc">${scheme.desc}</p>
+                        <a href="${scheme.link}" target="_blank" class="view-button">View Details</a>
+                    `;
+                    schemesListDiv.appendChild(schemeCard);
+                });
+
+            } catch (error) {
+                console.error('Error fetching schemes:', error);
+                schemesListDiv.innerHTML = '<p style="color: red;">Could not load government schemes. Please ensure the backend server is live and try again.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

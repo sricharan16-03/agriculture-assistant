@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Diseases - Agriculture Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Agri-Assistant 🌱</a>
+            <nav>
+                <a href="crop-data.html">Crop Data</a>
+                <a href="recommender.html">Crop Recommender</a>
+                <a href="techniques.html">Techniques</a>
+                <a href="schemes.html">Schemes</a>
+                <a href="diseases.html">Diseases</a>
+                <a href="npk-advisor.html">NPK Advisor</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>🔬 Common Crop Diseases & Solutions</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 40px auto;">
+            Information on common diseases affecting key crops and recommended management solutions.
+        </p>
+        
+        <div id="diseases-list" class="feature-cards">
+            <p>Loading disease data...</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            const diseasesListDiv = document.getElementById('diseases-list');
+            try {
+                // UPDATED URL
+                const response = await fetch('https://agri-backend.onrender.com/diseases');
+                if (!response.ok) throw new Error('Failed to fetch data.');
+
+                const diseases = await response.json();
+                diseasesListDiv.innerHTML = '';
+
+                diseases.forEach(item => {
+                    const diseaseCard = document.createElement('div');
+                    diseaseCard.className = 'card';
+                    
+                    diseaseCard.innerHTML = `
+                        <h3>${item.disease}</h3>
+                        <p><strong>Affected Crop:</strong> ${item.crop}</p>
+                        <p><strong>Solution:</strong> ${item.solution}</p>
+                    `;
+                    
+                    diseasesListDiv.appendChild(diseaseCard);
+                });
+
+            } catch (error) {
+                console.error('Error fetching diseases:', error);
+                diseasesListDiv.innerHTML = '<p style="color: red;">Could not load disease data. Please ensure the backend server is live.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
