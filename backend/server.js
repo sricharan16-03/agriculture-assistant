@@ -5,14 +5,15 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fetch = require("node-fetch");
 
-const Contact = require("./models/Contact");
-const Query = require("./models/Query");
-const Crop = require("./models/Crop");
+// Assuming your model files are in ./models/
+// You'll need to create these files with your Mongoose schemas
+// const Contact = require("./models/Contact");
+// const Query = require("./models/Query");
+// const Crop = require("./models/Crop");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ This is the final, correct list of allowed frontends
 const allowedOrigins = [
   "https://sricharan16-03.github.io", // Your live frontend URL
   "http://localhost:3000",           // For local development
@@ -39,7 +40,17 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("✅ MongoDB connected"))
 .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// ===== ROUTES =====
+// ===== DUMMY MODELS FOR DEMONSTRATION (replace with your actual models) =====
+const { Schema, model } = mongoose;
+const contactSchema = new Schema({ name: String, email: String, message: String });
+const querySchema = new Schema({ N: Number, P: Number, K: Number, temperature: Number, humidity: Number, ph: Number, rainfall: Number, recommended: [String] });
+const cropSchema = new Schema({ name: String, soil: String, climate: String, yield: String });
+
+const Contact = model('Contact', contactSchema);
+const Query = model('Query', querySchema);
+const Crop = model('Crop', cropSchema);
+// ===========================================================================
+
 
 app.post("/recommend", async (req, res) => {
   try {
@@ -60,7 +71,11 @@ app.post("/recommend", async (req, res) => {
 
 app.get("/crops", async (req, res) => {
   try {
+    // Using a dummy response if no crops are in the DB
     const crops = await Crop.find();
+    if (crops.length === 0) {
+        return res.json([{ name: "Wheat", soil: "Loamy", climate: "Cool", yield: "4 tons/hectare" }, { name: "Rice", soil: "Clayey", climate: "Hot & Humid", yield: "5 tons/hectare" }]);
+    }
     res.json(crops);
   } catch (err) {
     res.status(500).json({ msg: "Failed to load crops" });
@@ -68,7 +83,7 @@ app.get("/crops", async (req, res) => {
 });
 
 app.get("/techniques", (req, res) => {
-  res.json([ { name: "Drip Irrigation", desc: "Efficient water use for crops" }, { name: "Organic Farming", desc: "Eco-friendly farming techniques" }, { name: "Precision Agriculture", desc: "Uses technology like GPS and sensors to observe, measure, and respond to variability in crops." }, { name: "Hydroponics", desc: "A soilless farming technique where plants are grown in a nutrient-rich water solution." }, { name: "Vertical Farming", desc: "Growing crops in vertically stacked layers, often indoors, to maximize space." }, ]);
+  res.json([ { name: "Drip Irrigation", desc: "Efficient water use for crops." }, { name: "Organic Farming", desc: "Eco-friendly farming techniques." }, { name: "Precision Agriculture", desc: "Uses technology like GPS and sensors to observe, measure, and respond to variability in crops." }, { name: "Hydroponics", desc: "A soilless farming technique where plants are grown in a nutrient-rich water solution." }, { name: "Vertical Farming", desc: "Growing crops in vertically stacked layers, often indoors, to maximize space." }, ]);
 });
 
 app.get("/schemes", (req, res) => {
@@ -94,6 +109,5 @@ app.post("/contact", async (req, res) => {
   await contact.save();
   res.json({ success: true, msg: "Message saved!" });
 });
-
 
 app.listen(PORT, () => console.log(`🚀 Express running on port ${PORT}`));
