@@ -23,7 +23,7 @@
     </header>
 
     <main class="container">
-        <h2> Crop Recommender</h2>
+        <h2>🤖 AI Crop Recommender</h2>
         <p>Enter your soil and climate conditions to get an intelligent crop recommendation.</p>
 
         <form id="recommenderForm">
@@ -41,10 +41,7 @@
     </main>
 
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p>
-        </div>
-    </footer>
+        </footer>
 
     <div class="creator-credit">Created by Sricharan, Ramcharan and Suehl</div>
 
@@ -68,8 +65,8 @@
             };
 
             try {
-                // LIVE RENDER URL
-                const response = await fetch('https://agri-backend-412l.onrender.com/predict', {
+                // ✅ CORRECTED RENDER URL AND ROUTE
+                const response = await fetch('https://agri-backend-4121.onrender.com/recommend', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -78,7 +75,8 @@
                 if (!response.ok) throw new Error('Prediction request failed.');
 
                 const result = await response.json();
-                resultDiv.innerHTML = `<h3>Recommended Crop:</h3><p style="font-size: 1.5rem; font-weight: bold; color: #16a34a;">${result.crop}</p>`;
+                // Note: The backend route now returns { recommended: ["crop_name"] }
+                resultDiv.innerHTML = `<h3>Recommended Crop:</h3><p style="font-size: 1.5rem; font-weight: bold; color: #16a34a;">${result.recommended[0]}</p>`;
 
             } catch (error) {
                 console.error('Error:', error);
