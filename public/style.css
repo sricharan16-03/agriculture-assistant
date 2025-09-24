@@ -1,11 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8fafc;
     color: #334155;
     margin: 0;
     line-height: 1.6;
+    animation: fadeIn 0.8s ease-out; /* Added fade-in animation */
 }
 .container {
     width: 90%;
@@ -45,9 +52,25 @@ h3 { font-size: 1.4rem; }
     margin-left: 25px;
     font-weight: 400;
     transition: color 0.3s ease;
+    position: relative; /* For underline animation */
+    padding-bottom: 5px; /* For underline animation */
+}
+/* --- New Underline Animation --- */
+.navbar nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #2563eb;
+    transition: width 0.3s ease-out;
 }
 .navbar nav a:hover {
     color: #2563eb;
+}
+.navbar nav a:hover::after {
+    width: 100%;
 }
 
 .hero {
@@ -68,10 +91,13 @@ h3 { font-size: 1.4rem; }
     border-radius: 5px;
     text-decoration: none;
     font-weight: 600;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease; /* Updated transition */
 }
+/* --- New CTA Button Hover Effect --- */
 .cta-button:hover {
     background-color: #15803d;
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .features { padding: 80px 0; }
@@ -115,7 +141,15 @@ input[type="text"], input[type="email"], input[type="number"], textarea {
     border-radius: 5px;
     font-size: 1rem;
     box-sizing: border-box;
+    transition: all 0.3s ease; /* Added transition */
 }
+/* --- New Input Focus Glow Effect --- */
+input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
 button[type="submit"] {
     width: 100%;
     padding: 15px;
@@ -125,9 +159,13 @@ button[type="submit"] {
     border-radius: 5px;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease; /* Updated transition */
 }
-button[type="submit"]:hover { background-color: #15803d; }
+/* --- New Submit Button Hover Effect --- */
+button[type="submit"]:hover {
+    background-color: #15803d;
+    transform: scale(1.02);
+}
 
 .footer {
     background-color: #e2e8f0;
@@ -145,16 +183,19 @@ button[type="submit"]:hover { background-color: #15803d; }
 }
 .view-button {
     display: inline-block;
-    background-color: #000000;
+    background-color: #334155;
     color: #ffffff;
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
     text-align: center;
     font-weight: 500;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
-.view-button:hover { background-color: #ffffff; }
+.view-button:hover {
+    background-color: #1e293b;
+    transform: scale(1.05);
+}
 
 .creator-credit {
     position: fixed;
@@ -170,7 +211,6 @@ button[type="submit"]:hover { background-color: #15803d; }
     z-index: 1000;
     transition: transform 0.3s ease;
 }
-
 .creator-credit:hover {
     transform: translateY(-3px);
 }
