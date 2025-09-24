@@ -21,11 +21,9 @@
             </nav>
         </div>
     </header>
-
     <main class="container">
-        <h2>🤖 AI Crop Recommender</h2>
+        <h2> Crop Recommender</h2>
         <p>Enter your soil and climate conditions to get an intelligent crop recommendation.</p>
-
         <form id="recommenderForm">
             <div><label for="n">Nitrogen (N) content in soil:</label><input type="number" id="n" name="n" placeholder="e.g., 90" required step="any"></div>
             <div><label for="p">Phosphorous (P) content in soil:</label><input type="number" id="p" name="p" placeholder="e.g., 42" required step="any"></div>
@@ -36,24 +34,19 @@
             <div><label for="rainfall">Rainfall (mm):</label><input type="number" id="rainfall" name="rainfall" placeholder="e.g., 202" required step="any"></div>
             <button type="submit">Get Recommendation</button>
         </form>
-
         <div id="resultDiv" class="card" style="margin-top: 30px; text-align: center; display: none;"></div>
     </main>
-
     <footer class="footer">
-        </footer>
-
+        <div class="container"><p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p></div>
+    </footer>
     <div class="creator-credit">Created by Sricharan, Ramcharan and Suehl</div>
-
     <script>
         const form = document.getElementById('recommenderForm');
         const resultDiv = document.getElementById('resultDiv');
-
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = '<p>Getting recommendation...</p>';
-
             const formData = {
                 N: parseFloat(document.getElementById('n').value),
                 P: parseFloat(document.getElementById('p').value),
@@ -63,21 +56,16 @@
                 ph: parseFloat(document.getElementById('ph').value),
                 rainfall: parseFloat(document.getElementById('rainfall').value)
             };
-
             try {
-                // ✅ CORRECTED RENDER URL AND ROUTE
+                // ✅ CORRECTED URL AND ROUTE
                 const response = await fetch('https://agri-backend-4121.onrender.com/recommend', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
-
                 if (!response.ok) throw new Error('Prediction request failed.');
-
                 const result = await response.json();
-                // Note: The backend route now returns { recommended: ["crop_name"] }
                 resultDiv.innerHTML = `<h3>Recommended Crop:</h3><p style="font-size: 1.5rem; font-weight: bold; color: #16a34a;">${result.recommended[0]}</p>`;
-
             } catch (error) {
                 console.error('Error:', error);
                 resultDiv.innerHTML = `<p style="color: red;">Could not get a recommendation. Please ensure the server is live and try again.</p>`;

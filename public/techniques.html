@@ -21,49 +21,37 @@
             </nav>
         </div>
     </header>
-
     <main class="container">
         <h2>💡 Modern Farming Techniques</h2>
         <p style="text-align: center; max-width: 700px; margin: 0 auto 40px auto;">
             Learn about modern techniques that can help improve crop yield, save resources, and promote sustainable agriculture.
         </p>
-
         <div id="techniques-list" class="feature-cards">
             <p>Loading techniques...</p>
         </div>
     </main>
-
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p>
-        </div>
+        <div class="container"><p>&copy; 2025 Agriculture Assistant. All Rights Reserved.</p></div>
     </footer>
-
     <div class="creator-credit">Created by Sricharan, Ramcharan and Suehl</div>
-
     <script>
         window.addEventListener('DOMContentLoaded', async () => {
             const techniquesListDiv = document.getElementById('techniques-list');
             try {
-                // LIVE RENDER URL
-                const response = await fetch('https://agri-backend-412l.onrender.com/techniques');
+                // ✅ CORRECTED URL
+                const response = await fetch('https://agri-backend-4121.onrender.com/techniques');
                 if (!response.ok) throw new Error('Failed to fetch data.');
-
                 const techniques = await response.json();
                 techniquesListDiv.innerHTML = '';
-
                 techniques.forEach(technique => {
                     const techCard = document.createElement('div');
                     techCard.className = 'card';
-                    
                     techCard.innerHTML = `
                         <h3>${technique.name}</h3>
                         <p>${technique.desc}</p>
                     `;
-                    
                     techniquesListDiv.appendChild(techCard);
                 });
-
             } catch (error) {
                 console.error('Error fetching techniques:', error);
                 techniquesListDiv.innerHTML = '<p style="color: red;">Could not load techniques. Please ensure the backend server is live.</p>';
